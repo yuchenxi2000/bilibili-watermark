@@ -44,11 +44,11 @@ cv2.imwrite('out.png', out)  # 输出图片
 
 # 效果图
 
-![image](https://github.com/yuchenxi2000/bilibili-watermark/blob/master/example-small.png)
+![image](https://github.com/yuchenxi2000/bilibili-watermark/blob/master/example-small.jpg)
 
 去水印前
 
-![image](https://github.com/yuchenxi2000/bilibili-watermark/blob/master/example-out-small.png)
+![image](https://github.com/yuchenxi2000/bilibili-watermark/blob/master/example-out-small.jpg)
 
 去水印后
 
