@@ -20,28 +20,6 @@ ln(255 - s) = c ln(255 - w)
 
 利用这张图就可算出 c 值。因为原图已知（去除右上角的图就是原图），带入公式求 c，再根据 c 求要去水印图片的原图即可。
 
-# 源码（Python）
-
-``` python
-# 请先安装库：opencv，numpy
-import cv2
-import numpy
-
-color0 = numpy.array([70, 51, 39])  # 蒙版背景色（BGR）
-src = cv2.imread('in.png')  # 需要去水印的图片
-mask = cv2.imread('mask.png')  # 制作好的蒙版图片
-
-# 一些常数
-
-zero = numpy.array([0, 0, 0])
-white = numpy.array([255, 255, 255])
-constant = numpy.log(white - color0)
-
-# 应用公式
-out = numpy.maximum(zero, white-numpy.power(white-src, constant/numpy.log(white-mask)))
-cv2.imwrite('out.png', out)  # 输出图片
-```
-
 # 效果图
 
 ![image](https://github.com/yuchenxi2000/bilibili-watermark/blob/master/example-small.jpg)
@@ -52,24 +30,34 @@ cv2.imwrite('out.png', out)  # 输出图片
 
 去水印后
 
+# 附带的蒙版图
+
+> B站什么时候又搞了个'BiliBili正版'，害得我又做了一张
+
+> 图片肯定和你们的截图大小不一样，自己做吧。
+
+r73_g34_b35_正版.png 来源《伽百璃的堕落》ep.01 08:04
+
+r39_g51_b70_独播.png 来源《天使降临到我身边》ep.09 17:55
+
 # 一些注释
 
-源码中的 color0 是蒙版图的背景色，注意要从 RGB 转成 BGR。
+蒙版图命名规则：代码简洁起见，蒙版图片文件名必须包含蒙版图背景的rgb信息。规则是 'r'/'g'/'b' + 像素值，例如 'r39_g51_b70', 'r39g51b70.png', 'maskr39_g51b70.jpg' 都是合法的文件名。
 
-蒙版的图片大小、字样位置请自行调整。
+使用时
 
-制作蒙版图的时候尽量保留字样周围的像素，不要做处理。对字样周围像素做 Ps 处理会使公式中 c 值发生变化，导致处理出来的图有白边。
+``` shell
+python3.6 main.py -i example.png -o example-out.png -m r39_g51_b70_独播.png
+```
+
+自己制作蒙版图：用相同截图方式截一张字样附近几乎纯色的图，把其他地方填充同样的颜色。尽量保留字样周围的像素，不要做处理。对字样周围像素做 Ps 处理会使公式中 c 值发生变化，导致处理出来的图有白边。
 
 # 局限性
 
 对于浅色的图，效果非常不错，但对于深色的图效果不佳。因为深色图 RGB 值过小，最终结果会有色差。转换成 HSV 色彩空间可能可以解决，但我没试过。
 
-# Disclaim
-
-对于去水印造成的版权问题，本人概不负责。本人也不保证该算法完全不出问题。
 
 
-
-yuchenxi0_0
+yuchenxi2000
 
 2019.10.22
